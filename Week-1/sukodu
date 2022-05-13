@@ -1,0 +1,66 @@
+board=[
+    [7,8,0,4,0,0,1,2,0],
+    [6,0,0,0,7,5,0,0,9],
+    [0,0,0,6,0,1,0,7,8],
+    [0,0,7,0,4,0,2,6,0],
+    [0,0,1,0,5,0,9,3,0],
+    [9,0,4,0,6,0,0,0,5],
+    [0,7,0,3,0,0,0,1,2],
+    [1,2,0,0,0,7,4,0,0],
+    [0,4,9,2,0,6,0,0,7]
+]
+
+def solve(bo):
+    if not find_zero(bo):
+        return True
+    row,col =find_zero(bo)
+    for i in range(1,10):
+        if check_num(bo,i,(row,col)):
+            bo[row][col]=i
+            if solve(bo):
+                return True
+        bo[row][col]=0
+    return False
+
+
+
+def check_num(bo,num,pos):
+
+    for i in range(len(bo[0])):
+        if num==bo[pos[0]][i]:
+            return False
+    for j in range(len(bo)):
+        if num == bo[j][pos[1]]:
+            return False
+    bo_x=int(pos[0]/3)
+    bo_y=int(pos[1]/3)
+    sub_bo=[[bo[3*bo_x][3*bo_y],bo[3*bo_x][3*bo_y+1],bo[3*bo_x][3*bo_y+2]],
+            [bo[3 * bo_x +1][3 * bo_y], bo[3 * bo_x +1][3 * bo_y + 1], bo[3 * bo_x +1][3 * bo_y + 2]],
+            [bo[3 * bo_x +2][3 * bo_y], bo[3 * bo_x +2][3 * bo_y + 1 ], bo[3 * bo_x +2][3 * bo_y + 2]]
+            ]
+    for i in range(len(sub_bo)):
+        for j in range(len(sub_bo[0])):
+            if sub_bo[i][j]==num:
+                return False
+
+    return True
+def print_board(bo):
+    for i in range(len(bo)):
+        if i%3==0 and i!=0:
+            print("-----------------------------")
+        for j in range(len(bo[0])):
+            if j%3==0 and j!=0:
+                print(" | ",end=" ")
+            if j==8:
+                print(bo[i][j])
+            else:
+                print(str(bo[i][j]) + " ", end="")
+def find_zero(bo):
+    for i in range(len(bo)):
+        for j in range(len(bo[0])):
+            if bo[i][j]==0:
+               return(i,j)
+
+    return False
+solve(board)
+print_board(board)
